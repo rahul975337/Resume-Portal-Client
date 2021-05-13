@@ -1,38 +1,115 @@
-.App {
-  text-align: center;
+.app {
+  background: #151618;
+  height: 100vh;
+  width: 100vw;
+}
+.add-project-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  top: 50%;
+  width: 350px;
+  padding: 40px;
+
+  transform: translate(-50%, -50%);
+  background: #25282c;
+  box-sizing: border-box;
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
 }
 
-.App-logo {
-  height: 40vmin;
+.add-project-box .add-project-form {
+  position: relative;
+}
+
+.add-project-box .add-project-form input {
+  width: 100%;
+  padding: 10px 0;
+  font-size: 16px;
+  color: var(--white);
+  margin-bottom: 30px;
+  border: none;
+  border-bottom: 1px solid var(--white);
+  outline: none;
+  background: transparent;
+}
+.add-project-box .add-project-form label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px 0;
+  font-size: 16px;
+  color: var(--white);
   pointer-events: none;
+  transition: 0.5s;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.add-project-box .add-project-form input:focus ~ label,
+.add-project-box .add-project-form input:valid ~ label {
+  top: -20px;
+  left: 0;
+  color: var(--red);
+  font-size: 12px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.add-project-box button {
+  position: relative;
+  display: inline-block;
+  padding: 10px 20px;
+  color: var(--white);
+  background: var(--red);
+  font-size: 16px;
+  text-decoration: none;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition: 0.5s;
+  margin: auto;
+  outline: none;
+  letter-spacing: 4px;
+  border: none;
+  border-radius: 5px;
+}
+
+.add-project-box button:hover {
+  background: transparent;
+  color: var(--white);
+  border-radius: 5px;
+  box-shadow: 0 0 5px var(--red), 0 0 25pxvar (--red), 0 0 50px var(--red),
+    0 0 100px var(--red);
+  cursor: pointer;
+}
+
+/*  */
+.upload--label input {
+  height: 0;
+  width: 0;
+  opacity: 0;
+}
+.upload--label span {
+  margin: 8px;
+}
+.upload--label {
+  display: block;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--white);
+  border-radius: 50%;
+  margin: 0 auto;
+  line-height: 30px;
+  color: var(--white);
+  font-weight: bold;
+  font-size: 24px;
+}
+.upload--label:hover {
+  background: var(--red);
   color: white;
 }
-
-.App-link {
-  color: #61dafb;
+.output {
+  height: 20px;
+  font-size: 0.8rem;
+  color: var(--red);
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.error {
+  color: var(--red);
+  margin: 2px;
 }
