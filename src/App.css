@@ -2,6 +2,7 @@
   background: #151618;
   height: 100vh;
   width: 100vw;
+  overflow: hidden;
 }
 .add-project-box {
   position: absolute;
@@ -22,7 +23,8 @@
   position: relative;
 }
 
-.add-project-box .add-project-form input {
+.add-project-box .add-project-form input,
+.select {
   width: 100%;
   padding: 10px 0;
   font-size: 16px;
@@ -33,7 +35,8 @@
   outline: none;
   background: transparent;
 }
-.add-project-box .add-project-form label {
+.add-project-box .add-project-form label,
+.select-label {
   position: absolute;
   top: 0;
   left: 0;
@@ -45,6 +48,7 @@
 }
 
 .add-project-box .add-project-form input:focus ~ label,
+.select-label,
 .add-project-box .add-project-form input:valid ~ label {
   top: -20px;
   left: 0;
@@ -52,7 +56,51 @@
   font-size: 12px;
 }
 
-.add-project-box button {
+.menu {
+  background: transparent;
+  color: white;
+  border: none;
+  border-bottom: 1px solid var(--white);
+}
+#menu-box {
+  padding: 5px;
+  font-size: 10px;
+}
+#menu-box label {
+  color: var(--red);
+  margin-top: -25px;
+
+  font-size: 12px;
+}
+/*  */
+
+.box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.box select {
+  background-color: transparent;
+  color: white;
+  padding: 5px;
+  margin-top: 15px;
+
+  width: 280px;
+  border: none;
+  border-bottom: 1px solid var(--white);
+  font-size: 14px;
+
+  outline: none;
+}
+
+.box select option {
+  background: #25282c;
+  outline: none;
+}
+
+button {
   position: relative;
   display: inline-block;
   padding: 10px 20px;
@@ -64,22 +112,25 @@
   overflow: hidden;
   transition: 0.5s;
   margin: auto;
+  margin-top: 30px;
   outline: none;
   letter-spacing: 4px;
+  transition: all 0.2s ease-in-out;
   border: none;
   border-radius: 5px;
 }
 
-.add-project-box button:hover {
-  background: transparent;
+button:hover {
+  background: var(--red);
   color: var(--white);
   border-radius: 5px;
+
+  transform: scale(1.1);
   box-shadow: 0 0 5px var(--red), 0 0 25pxvar (--red), 0 0 50px var(--red),
     0 0 100px var(--red);
   cursor: pointer;
 }
 
-/*  */
 .upload--label input {
   height: 0;
   width: 0;
@@ -104,12 +155,40 @@
   background: var(--red);
   color: white;
 }
-.output {
-  height: 20px;
-  font-size: 0.8rem;
-  color: var(--red);
+
+/*  */
+.butons {
+  display: flex;
+  flex-direction: row;
 }
-.error {
-  color: var(--red);
-  margin: 2px;
+
+/* file chooser new */
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  margin: 10px;
+  width: 100px;
+  display: inline-block;
+}
+
+.btn {
+  border: 2px solid gray;
+  color: white;
+  width: 100px;
+  border: none;
+  text-transform: none;
+  letter-spacing: normal;
+  overflow: hidden;
+  background-color: var(--red);
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.upload-btn-wrapper input[type="file"] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
 }

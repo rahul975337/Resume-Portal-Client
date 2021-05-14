@@ -1,8 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import { projectFirestore, projectStorage } from "./firebase";
+
 function App() {
   const [department, setDepartment] = useState("");
   const [name, setName] = useState("");
@@ -10,31 +11,54 @@ function App() {
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
   const [designation, setDesignation] = useState("");
-  const [fileUrl, setFileUrl] = useState("");
+  const [resume, setResume] = useState("ld");
+  const [pic, setPic] = useState("dd");
+  // to handle option clear
+  // const [value, setValue] = useState("");
+
+  const handleDepartment = async (e) => {
+    setDepartment(e.target.value);
+    // if (!department)
+    //   return toast("Please select a department", { type: "dark" });
+  };
+
+  // const values = [
+  //   { value: "it", label: "IT and Software" },
+  //   {
+  //     value: "bank",
+  //     label: "Banking",
+  //   },
+  //   { value: "insurance", label: "Insurance" },
+  //   { value: "buisness", label: "Buisness" },
+  // ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const department = e.target.department.value;
     const name = e.target.name.value;
     const phone = e.target.phone.value;
     const email = e.target.email.value;
     const company = e.target.company.value;
     const designation = e.target.designation.value;
-
+    if (phone.length !== 10)
+      return toast("Please enter 10 digit mobile number", { type: "dark" });
+    if (!department)
+      return toast("Please select a department", { type: "dark" });
     if (
       !department ||
       !name ||
-      !fileUrl ||
-      !phone ||
+      // !resume ||
+      // !pic ||
+      (!phone && phone.length() !== 10) ||
       !email ||
       !company ||
       !designation
     ) {
-      return toast("fill all the details", { type: "error" });
+      return toast("Please fill all the details correctly ", { type: "error" });
     }
+
     await projectFirestore
       .collection(department)
-      .doc(name)
+      .doc(email)
       .set({
         department: department,
         name: name,
@@ -42,7 +66,8 @@ function App() {
         email: email,
         company: company,
         designation: designation,
-        file: fileUrl,
+        resume: resume,
+        pic: pic,
       })
       .then(() => {
         toast("Successfully Filled", { type: "success" });
@@ -50,29 +75,53 @@ function App() {
       .catch((error) => {
         alert(error.message);
       });
-    setDepartment("");
+    // setDepartment("");
     setName("");
     setPhone("");
     setEmail("");
     setCompany("");
     setDesignation("");
+    setResume("");
+    setPic("");
+    // setValue("");
   };
-  const handleFileChange = async (e) => {
+  const handleResume = async (e) => {
+    const file = e.target.files[0];
+
+    const storageRef = projectStorage.ref();
+    if (!file) return toast("please select a file", { type: "dark" });
+    const fileRef = storageRef.child(file.name);
+    await fileRef
+      .put(file)
+      .then(() => {
+        alert("Resume upload successful");
+      })
+      .catch((error) => {
+        toast("please select a file", { type: "dark" });
+      });
+    setResume(await fileRef.getDownloadURL());
+  };
+  const handlePic = async (e) => {
     const file = e.target.files[0];
     const storageRef = projectStorage.ref();
+    if (!file) return toast("please select a file", { type: "dark" });
     const fileRef = storageRef.child(file.name);
-    await fileRef.put(file);
-    setFileUrl(await fileRef.getDownloadURL());
+    await fileRef
+      .put(file)
+      .then(() => {
+        alert("Picture upload successful");
+      })
+      .catch((error) => {
+        toast("please select a file", { type: "dark" });
+      });
+    setPic(await fileRef.getDownloadURL());
   };
+
   return (
     <div className="app">
       <ToastContainer position="bottom-center" />
       <div className=" add-project-box">
         <form onSubmit={handleSubmit}>
-          <label className="upload--label">
-            <input type="file" onChange={handleFileChange} />
-            <span>+</span>
-          </label>
           {/* name */}
           <div className="add-project-form">
             <input
@@ -86,7 +135,7 @@ function App() {
           {/*  phone*/}
           <div className="add-project-form">
             <input
-              type="text"
+              type="number"
               name="phone"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
@@ -95,21 +144,12 @@ function App() {
           </div>
           {/*  city*/}
           {/*  state*/}
-          {/*  department*/}
-          <div className="add-project-form">
-            <input
-              type="text"
-              name="department"
-              value={department}
-              onChange={(e) => setDepartment(e.target.value)}
-            />
-            <label>Department</label>
-          </div>
+
           {/*  experience*/}
           {/* email */}
           <div className="add-project-form">
             <input
-              type="text"
+              type="email"
               name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -137,6 +177,30 @@ function App() {
             <label>Designation</label>
           </div>
 
+          {/*  department*/}
+          <div className="add-project-form" id="menu-box">
+            <label>Department</label>
+            <div className="box">
+              <select onChange={handleDepartment}>
+                <option value="" selected></option>
+                <option value="it">IT Software</option>
+
+                <option value="bank">Banking</option>
+                <option value="insurance">Insurance</option>
+                <option value="buisness">Buisness</option>
+              </select>
+            </div>
+          </div>
+          <div className="buttons">
+            <span className="upload-btn-wrapper">
+              <button className="btn">Resume</button>
+              <input type="file" onChange={handleResume} />
+            </span>
+            <span className="upload-btn-wrapper">
+              <button className="btn">Picture</button>
+              <input type="file" onChange={handlePic} />
+            </span>
+          </div>
           <button type="submit">Upload</button>
         </form>
       </div>
@@ -145,7 +209,3 @@ function App() {
 }
 
 export default App;
-
-/*
-username, phone, email, currentCompy, designation
-*/
